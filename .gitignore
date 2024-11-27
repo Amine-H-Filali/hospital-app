@@ -31,3 +31,16 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### npm ###
+node_modules/
+# Tailwind CSS build files
+src/main/resources/static/output.css
+
+# Package distribution
+package-lock.json
+npm-shrinkwrap.json
+# npm logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*

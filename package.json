@@ -1,0 +1,16 @@
+{
+  "name": "hospital-app",
+  "version": "1.0.0",
+  "description": "Ce projet **Patients APP** est développé avec **Spring Boot** version **3.4.0** et inclut les dépendances suivantes :",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build:css": "npx tailwindcss -i ./src/main/resources/static/input.css -o ./src/main/resources/static/output.css --watch"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "tailwindcss": "^3.4.15"
+  }
+}

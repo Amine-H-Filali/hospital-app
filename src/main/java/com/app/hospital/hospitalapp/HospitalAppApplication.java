@@ -26,13 +26,13 @@ public class HospitalAppApplication {
         SpringApplication.run(HospitalAppApplication.class, args);
     }
 
-    @Bean
+  /*  @Bean
     public CommandLineRunner start() {
 
         return args -> {
-            Patient p1 = Patient.builder().name("Hmidani").prenom("nabil").dateNaissance(new Date()).score(10).malade(true).build();
-            Patient p2 = Patient.builder().name("Filali").prenom("yassine").dateNaissance(new Date()).score(12).malade(false).build();
-            Patient p3 = Patient.builder().name("elmoutkine").prenom("khalid").dateNaissance(new Date()).score(20).malade(false).build();
+            Patient p1 = Patient.builder().nom("Hmidani").prenom("nabil").dateNaissance(new Date()).score(10).malade(true).build();
+            Patient p2 = Patient.builder().nom("Filali").prenom("yassine").dateNaissance(new Date()).score(12).malade(false).build();
+            Patient p3 = Patient.builder().nom("elmoutkine").prenom("khalid").dateNaissance(new Date()).score(20).malade(false).build();
 
             Iterable<Patient> listPatients=List.of(p1,p2,p3);
             patientRepository.saveAll(listPatients);
@@ -40,6 +40,6 @@ public class HospitalAppApplication {
             List<Patient> sortedPatientsList = patientRepository.findAll(Sort.by("prenom"));
             sortedPatientsList.forEach(System.out::println);
         };
-    }
+    }*/
 
 }
