@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="template1">
+<head>
+    <meta charset="UTF-8">
+    <title>Form Patients</title>
+    <!-- Correct path to output.css -->
+
+
+</head>
+<body>
+
+<div layout:fragment="content1" >
+
+
+    <form class="pt-5 max-w-screen-md mx-auto"  th:action="@{edit(keyword=${keyword},page=${page})}" method="post">
+
+            <div class="relative z-0 w-full mb-5 group">
+                <input  th:value="${patient.id}" type="hidden" name="id" id="floating_id" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" "   />
+                <label  for="floating_id" class=" font-medium  text-sm text-gray-500 dark:text-gray-400 ">ID</label>
+                <label  th:text="${patient.id}" class="font-medium  text-sm text-gray-500 dark:text-gray-400 "></label>
+
+            </div>
+
+
+        <div>
+            <div class="relative z-0 w-full mb-5 group">
+                <input  th:value="${patient.nom}" type="text" name="nom" id="floating_nom" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
+                <label for="floating_nom" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 rtl:peer-focus:left-auto peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Nom</label>
+            </div>
+            <p th:errors="${patient.nom}"  class=" pb-3 text-xs text-red-600 dark:text-red-400"></p>
+        </div>
+        <div>
+            <div class="relative z-0 w-full mb-5 group">
+                <input th:value="${patient.prenom}" type="text" name="prenom" id="floating_prenom" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
+                <label for="floating_prenom" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Prénom</label>
+            </div>
+            <p th:errors="${patient.prenom}"  class="pb-3 text-xs text-red-600 dark:text-red-400"></p>
+        </div>
+        <div>
+            <div class="relative z-0 w-full mb-5 group">
+                <input th:value="${patient.dateNaissance}" type="date" name="dateNaissance" id="floating_repeat_date" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" " required />
+                <label for="floating_repeat_date" class="peer-focus:font-medium absolute text-sm text-gray-500 dark:text-gray-400 duration-300 transform -translate-y-6 scale-75 top-3 -z-10 origin-[0] peer-focus:start-0 rtl:peer-focus:translate-x-1/4 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:translate-y-0 peer-focus:scale-75 peer-focus:-translate-y-6">Date de Naissance</label>
+            </div>
+            <p th:errors="${patient.dateNaissance}"  class=" pb-3 text-xs text-red-600 dark:text-red-400"></p>
+        </div>
+        <div>
+            <div class="grid md:grid-cols-2 md:gap-6">
+                <div class="relative z-0 w-full mb-5 group">
+                    <label for="quantity-input" class="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Score</label>
+                    <div class="relative flex items-center max-w-[8rem]">
+                        <!-- Bouton pour diminuer le score -->
+                        <button type="button" id="decrement-button" data-input-counter-decrement="quantity-input"
+                                class="bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 border border-gray-300 rounded-s-lg p-3 h-11 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none">
+                            <svg class="w-3 h-3 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 2">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M1 1h16"/>
+                            </svg>
+                        </button>
+
+                        <!-- Champ input pour le score -->
+                        <input th:value="${patient.score}" name="score" type="text" id="quantity-input" data-input-counter
+                               data-input-counter-min="1" data-input-counter-max="100" aria-describedby="helper-text-explanation"
+                               class="bg-gray-50 border-x-0 border-gray-300 h-11 text-center text-gray-900 text-sm focus:ring-blue-500 focus:border-blue-500 block w-full py-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                               placeholder="999" value="5" required />
+
+                        <!-- Bouton pour augmenter le score -->
+                        <button type="button" id="increment-button" data-input-counter-increment="quantity-input"
+                                class="bg-gray-100 dark:bg-gray-700 dark:hover:bg-gray-600 dark:border-gray-600 hover:bg-gray-200 border border-gray-300 rounded-e-lg p-3 h-11 focus:ring-gray-100 dark:focus:ring-gray-700 focus:ring-2 focus:outline-none">
+                            <svg class="w-3 h-3 text-gray-900 dark:text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 18 18">
+                                <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 1v16M1 9h16"/>
+                            </svg>
+                        </button>
+                    </div>
+
+                    <!-- Message d'erreur -->
+                    <p th:errors="${patient.score}" class="mt-2 text-xs text-red-600 dark:text-red-400"></p>
+                </div>
+            </div>
+            <div>
+                <div class="flex items-center mb-5 group">
+                    <input  th:checked="${patient.malade}" id="default-checkbox" type="checkbox" name="malade" class="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600">
+                    <label for="default-checkbox" class="ms-2 text-sm font-medium text-gray-900 dark:text-gray-300">Malade</label>
+                </div>
+                <p th:errors="${patient.malade}"  class="pb-3 text-xs text-red-600 dark:text-red-400"></p>
+            </div>
+        </div>
+
+        <button type="submit" class="text-white bg-gray-800 hover:bg-blue-900 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Submit</button>
+    </form>
+
+</div>
+
+
+</body>
+
+</html>

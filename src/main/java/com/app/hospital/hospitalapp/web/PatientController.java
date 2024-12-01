@@ -2,14 +2,13 @@ package com.app.hospital.hospitalapp.web;
 
 import com.app.hospital.hospitalapp.entities.Patient;
 import com.app.hospital.hospitalapp.repositories.PatientRepository;
+import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -58,10 +57,43 @@ public class PatientController {
 
 
     @PostMapping(path = "/save")
-    public String save(Model model, Patient patient) {
+    public String save(Model model, @Valid Patient patient, BindingResult bindingResult) {
+        if(bindingResult.hasErrors()) return "formPatients";
         patientRepository.save(patient);
 
-        return "formPatients";
+        return "redirect:/formPatients";
+
+    }
+
+    @GetMapping("/editPatient")
+    public String editPatient(Model model,Long id,
+                              @RequestParam(name = "keyword") String keyword,
+                              @RequestParam(name = "page") String page) {
+       Patient patient= patientRepository.findById(id).orElseThrow(()->new RuntimeException("Patient introuvable"));
+
+        model.addAttribute("patient",patient);
+        model.addAttribute("keyword",keyword);
+        model.addAttribute("page",page);
+
+        return "editPatient";
+    }
+
+    @PostMapping(path = "/edit")
+    public String edit(@RequestParam(name = "keyword") String keyword,
+                       @RequestParam(name = "page") String page, @Valid Patient patient, BindingResult bindingResult) {
+        if(bindingResult.hasErrors()) return "editPatient";
+        Patient newPatient=patientRepository.findById(patient.getId()).orElseThrow(() -> new RuntimeException("Patient not exist with id: " + patient.getId()));
+
+        newPatient.setNom(patient.getNom());
+        newPatient.setScore(patient.getScore());
+        newPatient.setPrenom(patient.getPrenom());
+        newPatient.setMalade(patient.isMalade());
+        newPatient.setDateNaissance(patient.getDateNaissance());
+        patientRepository.save(newPatient);
+
+
+
+        return "redirect:/index?keyword=" + keyword + "&page=" + page;
 
     }
 }

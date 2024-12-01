@@ -86,13 +86,23 @@
                 <td th:text="${p.score}" class="px-6 py-4"></td>
                 <td th:text="${p.malade}" class="px-6 py-4"></td>
                 <td class="px-6 py-4">
+
+                    <button
+                            type="button"
+                            onclick="location.href = this.getAttribute('data-url');"
+                            th:attr="data-url=@{editPatient(id=${p.id},keyword=${keyword},page=${currentPage})}"
+                            class="text-white bg-blue-800 hover:bg-blue-900 px-5 py-2 rounded-lg">
+                        Edit
+                    </button>
+
                     <button
                             data-modal-target="popup-modal"
                             data-modal-toggle="popup-modal"
                             th:attr="data-delete-url=@{deletePatient(id=${p.id},keyword=${keyword},page=${currentPage})}"
-                            class="text-white bg-gray-800 hover:bg-gray-900 px-5 py-2 rounded-lg">
+                            class="text-white bg-red-600 hover:bg-red-750 px-5 py-2 rounded-lg">
                         Delete
                     </button>
+
 
                 </td>
 
