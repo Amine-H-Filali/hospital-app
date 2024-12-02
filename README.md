@@ -12,7 +12,8 @@ Ce projet **Patients APP** est développé avec **Spring Boot** version **3.4.0*
 
 ## Architecture du Projet
 
-![Project Architecture](images/architecture-projet.png) ![UI](images/UI.png)
+![Project Architecture](images/architecture-projet.png) ![login](images/login.png)
+![UI](images/ui-homepage.png)
 
 
 Author Amine Hmidani Filali
