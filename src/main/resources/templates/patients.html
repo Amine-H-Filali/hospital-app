@@ -5,6 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Patients</title>
+
     <!-- Correct path to output.css -->
 
 
@@ -20,7 +21,7 @@
 
     <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
 
-        <form method="get" th:action="@{/index}">
+        <form method="get" th:action="@{/user/index}">
 
             <div class="pl-4 pb-4 bg-white dark:bg-gray-900">
                 <label for="table-search" class="sr-only">Search</label>
@@ -71,7 +72,7 @@
                 <th scope="col" class="px-6 py-3">Date</th>
                 <th scope="col" class="px-6 py-3">Score</th>
                 <th scope="col" class="px-6 py-3">Malade</th>
-                <th scope="col" class="px-6 py-3">Actions</th>
+                <th th:if="${#authorization.expression('hasRole(''ADMIN'')')}" scope="col" class="px-6 py-3">Actions</th>
 
             </tr>
             </thead>
@@ -85,12 +86,12 @@
                 <td th:text="${p.dateNaissance}" class="px-6 py-4"></td>
                 <td th:text="${p.score}" class="px-6 py-4"></td>
                 <td th:text="${p.malade}" class="px-6 py-4"></td>
-                <td class="px-6 py-4">
+                <td th:if="${#authorization.expression('hasRole(''ADMIN'')')}" class="px-6 py-4">
 
                     <button
                             type="button"
                             onclick="location.href = this.getAttribute('data-url');"
-                            th:attr="data-url=@{editPatient(id=${p.id},keyword=${keyword},page=${currentPage})}"
+                            th:attr="data-url=@{/admin/editPatient(id=${p.id},keyword=${keyword},page=${currentPage})}"
                             class="text-white bg-blue-800 hover:bg-blue-900 px-5 py-2 rounded-lg">
                         Edit
                     </button>
@@ -98,7 +99,7 @@
                     <button
                             data-modal-target="popup-modal"
                             data-modal-toggle="popup-modal"
-                            th:attr="data-delete-url=@{deletePatient(id=${p.id},keyword=${keyword},page=${currentPage})}"
+                            th:attr="data-delete-url=@{/admin/deletePatient(id=${p.id},keyword=${keyword},page=${currentPage})}"
                             class="text-white bg-red-600 hover:bg-red-750 px-5 py-2 rounded-lg">
                         Delete
                     </button>
@@ -116,7 +117,7 @@
         <nav aria-label="Page navigation example">
             <ul class="flex items-center -space-x-px h-10 text-base">
                 <li>
-                    <a th:href="@{/index(page=${currentPage-1},keyword=${keyword})}"
+                    <a th:href="@{/user/index(page=${currentPage-1},keyword=${keyword})}"
                        class="flex items-center justify-center px-4 h-10 ms-0 leading-tight text-gray-500 bg-white border border-e-0 border-gray-300 rounded-s-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
                         <span class="sr-only">Previous</span>
                         <svg class="w-3 h-3 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
@@ -128,7 +129,7 @@
                 </li>
                 <li th:each="page,status:${pages}">
                     <a th:class="${status.index==currentPage? 'bg-gray-800 text-white flex items-center justify-center px-4 h-10 leading-tight  border':'flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white'}"
-                       th:href="@{/index(page=${status.index},keyword=${keyword})}"
+                       th:href="@{/user/index(page=${status.index},keyword=${keyword})}"
                        th:text="${status.index}"
                        class="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
 
@@ -136,7 +137,7 @@
                 </li>
 
                 <li>
-                    <a th:href="@{/index(page=${currentPage+1},keyword=${keyword})}"
+                    <a th:href="@{/user/index(page=${currentPage+1},keyword=${keyword})}"
                        class="flex items-center justify-center px-4 h-10 leading-tight text-gray-500 bg-white border border-gray-300 rounded-e-lg hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
                         <span class="sr-only">Next</span>
                         <svg class="w-3 h-3 rtl:rotate-180" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"

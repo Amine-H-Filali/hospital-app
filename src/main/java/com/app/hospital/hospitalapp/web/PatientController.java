@@ -20,8 +20,14 @@ public class PatientController {
     public PatientController(PatientRepository patientRepository) {
         this.patientRepository = patientRepository;
     }
+    @GetMapping("/")
+    public String Home(){
 
-    @GetMapping("/index")
+        return "redirect:/user/index";
+    }
+
+
+    @GetMapping("/user/index")
     public String index(Model model, @RequestParam(name = "page", defaultValue = "0") int page,
                         @RequestParam(name = "size", defaultValue = "3") int size,
                         @RequestParam(name = "keyword", defaultValue = "") String keyword
@@ -35,7 +41,7 @@ public class PatientController {
         return "patients";
     }
 
-    @GetMapping("/deletePatient")
+    @GetMapping("/admin/deletePatient")
     public String delete(@RequestParam(name = "id") Long id,
                          @RequestParam(name = "keyword") String keyword,
                          @RequestParam(name = "page") String page
@@ -43,11 +49,11 @@ public class PatientController {
     ) {
         patientRepository.deleteById(id);
 
-        return "redirect:/index?keyword=" + keyword + "&page=" + page;
+        return "redirect:/user/index?keyword=" + keyword + "&page=" + page;
 
     }
 
-    @GetMapping("/formPatients")
+    @GetMapping("/admin/formPatients")
     public String formPatients(Model model) {
 
         model.addAttribute("patient", new Patient());
@@ -56,16 +62,16 @@ public class PatientController {
     }
 
 
-    @PostMapping(path = "/save")
+    @PostMapping(path = "/admin/save")
     public String save(Model model, @Valid Patient patient, BindingResult bindingResult) {
         if(bindingResult.hasErrors()) return "formPatients";
         patientRepository.save(patient);
 
-        return "redirect:/formPatients";
+        return "redirect:/admin/formPatients";
 
     }
 
-    @GetMapping("/editPatient")
+    @GetMapping("/admin/editPatient")
     public String editPatient(Model model,Long id,
                               @RequestParam(name = "keyword") String keyword,
                               @RequestParam(name = "page") String page) {
@@ -78,7 +84,7 @@ public class PatientController {
         return "editPatient";
     }
 
-    @PostMapping(path = "/edit")
+    @PostMapping(path = "/admin/edit")
     public String edit(@RequestParam(name = "keyword") String keyword,
                        @RequestParam(name = "page") String page, @Valid Patient patient, BindingResult bindingResult) {
         if(bindingResult.hasErrors()) return "editPatient";
@@ -93,7 +99,7 @@ public class PatientController {
 
 
 
-        return "redirect:/index?keyword=" + keyword + "&page=" + page;
+        return "redirect:/user/index?keyword=" + keyword + "&page=" + page;
 
     }
 }

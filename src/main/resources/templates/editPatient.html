@@ -5,6 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Form Patients</title>
+
     <!-- Correct path to output.css -->
 
 
@@ -14,7 +15,7 @@
 <div layout:fragment="content1" >
 
 
-    <form class="pt-5 max-w-screen-md mx-auto"  th:action="@{edit(keyword=${keyword},page=${page})}" method="post">
+    <form class="pt-5 max-w-screen-md mx-auto"  th:action="@{/admin/edit(keyword=${keyword},page=${page})}" method="post">
 
             <div class="relative z-0 w-full mb-5 group">
                 <input  th:value="${patient.id}" type="hidden" name="id" id="floating_id" class="block py-2.5 px-0 w-full text-sm text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer" placeholder=" "   />
