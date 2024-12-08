@@ -1,8 +1,11 @@
 package com.app.hospital.hospitalapp.security;
 
+import com.app.hospital.hospitalapp.security.services.UserDetailsImpl;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.core.userdetails.User;
@@ -12,9 +15,12 @@ import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
+    @Autowired
+    UserDetailsImpl userDetails;
 
-    @Bean
+   // @Bean
     public InMemoryUserDetailsManager inMemoryUserDetailsManager(PasswordEncoder passwordEncoder) {
        String encode= passwordEncoder.encode("1234");
 
@@ -45,17 +51,21 @@ public class SecurityConfig {
                     response.sendRedirect(redirectUrl);
                 })
     )
+
                 .rememberMe(Customizer.withDefaults())
-                .authorizeHttpRequests(ar->ar.requestMatchers("/css/**", "/output.css", "/js/**", "/images/**", "/webjars/**").permitAll())
-                .authorizeHttpRequests(ar->ar.requestMatchers("/user/**").hasRole("USER"))
-                .authorizeHttpRequests(ar->ar.requestMatchers("/admin/**").hasRole("ADMIN"))
+                .authorizeHttpRequests(ar->ar.requestMatchers("/css/**", "/output.css", "/js/**", "/images/**", "/webjars/**").permitAll()
+                        .requestMatchers("/register").not().authenticated())
+               // .authorizeHttpRequests(ar->ar.requestMatchers("/user/**").hasRole("USER"))
+               // .authorizeHttpRequests(ar->ar.requestMatchers("/admin/**").hasRole("ADMIN"))
                 .authorizeHttpRequests(ar->ar.anyRequest().authenticated())
+
 
                 .exceptionHandling(exception -> exception
                         .accessDeniedHandler((request, response, accessDeniedException) -> {
                             response.sendRedirect("/notAuthorized");
                         })
                 )
+                .userDetailsService(userDetails)
 
 
                 .build();

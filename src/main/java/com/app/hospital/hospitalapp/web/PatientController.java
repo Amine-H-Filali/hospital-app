@@ -5,6 +5,7 @@ import com.app.hospital.hospitalapp.repositories.PatientRepository;
 import jakarta.validation.Valid;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -20,12 +21,12 @@ public class PatientController {
     public PatientController(PatientRepository patientRepository) {
         this.patientRepository = patientRepository;
     }
+
     @GetMapping("/")
-    public String Home(){
+    public String Home() {
 
         return "redirect:/user/index";
     }
-
 
     @GetMapping("/user/index")
     public String index(Model model, @RequestParam(name = "page", defaultValue = "0") int page,
@@ -42,6 +43,7 @@ public class PatientController {
     }
 
     @GetMapping("/admin/deletePatient")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String delete(@RequestParam(name = "id") Long id,
                          @RequestParam(name = "keyword") String keyword,
                          @RequestParam(name = "page") String page
@@ -54,6 +56,7 @@ public class PatientController {
     }
 
     @GetMapping("/admin/formPatients")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String formPatients(Model model) {
 
         model.addAttribute("patient", new Patient());
@@ -63,8 +66,9 @@ public class PatientController {
 
 
     @PostMapping(path = "/admin/save")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String save(Model model, @Valid Patient patient, BindingResult bindingResult) {
-        if(bindingResult.hasErrors()) return "formPatients";
+        if (bindingResult.hasErrors()) return "formPatients";
         patientRepository.save(patient);
 
         return "redirect:/admin/formPatients";
@@ -72,23 +76,25 @@ public class PatientController {
     }
 
     @GetMapping("/admin/editPatient")
-    public String editPatient(Model model,Long id,
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
+    public String editPatient(Model model, Long id,
                               @RequestParam(name = "keyword") String keyword,
                               @RequestParam(name = "page") String page) {
-       Patient patient= patientRepository.findById(id).orElseThrow(()->new RuntimeException("Patient introuvable"));
+        Patient patient = patientRepository.findById(id).orElseThrow(() -> new RuntimeException("Patient introuvable"));
 
-        model.addAttribute("patient",patient);
-        model.addAttribute("keyword",keyword);
-        model.addAttribute("page",page);
+        model.addAttribute("patient", patient);
+        model.addAttribute("keyword", keyword);
+        model.addAttribute("page", page);
 
         return "editPatient";
     }
 
     @PostMapping(path = "/admin/edit")
+    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public String edit(@RequestParam(name = "keyword") String keyword,
                        @RequestParam(name = "page") String page, @Valid Patient patient, BindingResult bindingResult) {
-        if(bindingResult.hasErrors()) return "editPatient";
-        Patient newPatient=patientRepository.findById(patient.getId()).orElseThrow(() -> new RuntimeException("Patient not exist with id: " + patient.getId()));
+        if (bindingResult.hasErrors()) return "editPatient";
+        Patient newPatient = patientRepository.findById(patient.getId()).orElseThrow(() -> new RuntimeException("Patient not exist with id: " + patient.getId()));
 
         newPatient.setNom(patient.getNom());
         newPatient.setScore(patient.getScore());
@@ -98,8 +104,9 @@ public class PatientController {
         patientRepository.save(newPatient);
 
 
-
         return "redirect:/user/index?keyword=" + keyword + "&page=" + page;
 
     }
+
+
 }
